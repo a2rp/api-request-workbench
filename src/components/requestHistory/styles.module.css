@@ -1,0 +1,217 @@
+.requestHistory {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    border-right: 1px solid #2b333d;
+    background: #171c24;
+    padding: 18px 12px;
+
+    .historyHeading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 4px 15px;
+
+        > span:first-child {
+            display: grid;
+            width: 30px;
+            height: 30px;
+            place-items: center;
+            border: 1px solid #35404b;
+            border-radius: 7px;
+            color: #8ba1b6;
+
+            svg {
+                width: 15px;
+                height: 15px;
+            }
+        }
+
+        h2 {
+            color: #dbe2e9;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        p {
+            margin-top: 1px;
+            color: #7f8b98;
+            font-size: 9px;
+        }
+    }
+
+    .historyCount {
+        display: grid;
+        min-width: 21px;
+        height: 20px;
+        place-items: center;
+        margin-left: auto;
+        border-radius: 5px;
+        background: #252d37;
+        color: #aeb8c2;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 9px;
+    }
+
+    .historyList {
+        display: grid;
+        align-content: start;
+        gap: 6px;
+    }
+
+    .historyItem {
+        display: grid;
+        min-width: 0;
+        gap: 7px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        background: transparent;
+        padding: 10px 8px;
+        text-align: left;
+        transition: border-color 140ms ease, box-shadow 140ms ease;
+
+        &:hover {
+            border-color: #3c4854;
+            box-shadow: 0 2px 8px rgb(0 0 0 / 14%);
+        }
+
+        &:focus-visible {
+            outline: 2px solid #72b9a7;
+            outline-offset: 1px;
+        }
+    }
+
+    .historyItemActive {
+        border-color: #3a655c;
+        background: #202b2c;
+    }
+
+    .historyItemTop {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .methodBadge {
+        border-radius: 4px;
+        background: #263b35;
+        padding: 2px 5px;
+        color: #8be2c9;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 8px;
+        font-weight: 750;
+    }
+
+    .post {
+        background: #3a3525;
+        color: #f2c878;
+    }
+
+    .put,
+    .patch {
+        background: #2a3447;
+        color: #a4c2f4;
+    }
+
+    .delete {
+        background: #42292d;
+        color: #f09a9d;
+    }
+
+    .statusDot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .statusOk {
+        background: #69d5b4;
+    }
+
+    .statusFailed {
+        background: #e18181;
+    }
+
+    .historyTime {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        color: #8793a0;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 8px;
+
+        svg {
+            width: 11px;
+            height: 11px;
+        }
+    }
+
+    .historyUrl {
+        overflow: hidden;
+        color: #d0d8e1;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 9px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .historyStatus {
+        color: #84909c;
+        font-size: 9px;
+    }
+
+    .emptyHistory {
+        display: grid;
+        min-height: 150px;
+        align-content: center;
+        justify-items: center;
+        padding: 15px;
+        color: #778494;
+        text-align: center;
+
+        svg {
+            width: 22px;
+            height: 22px;
+            color: #6c877f;
+        }
+
+        p {
+            max-width: 155px;
+            margin-top: 9px;
+            font-size: 10px;
+        }
+    }
+
+    .historyNote {
+        margin-top: auto;
+        border-top: 1px solid #29313b;
+        padding: 12px 4px 0;
+        color: #74818e;
+        font-size: 9px;
+    }
+
+    @media (max-width: 900px) {
+        border-right: 0;
+        border-bottom: 1px solid #2b333d;
+        padding: 13px 12px;
+
+        .historyHeading {
+            padding-bottom: 8px;
+        }
+
+        .historyList {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .historyNote {
+            display: none;
+        }
+    }
+
+    @media (max-width: 620px) {
+        .historyList {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
