@@ -22,7 +22,7 @@ const ResponseViewer = ({ response }) => {
     };
 
     return (
-        <section className={styles.responseViewer} aria-labelledby="response-title">
+        <section className={styles.responseViewer} id="response" aria-labelledby="response-title">
             <div className={styles.responseHeader}>
                 <div className={styles.responseHeading}>
                     <span className={styles.responseIcon}><LuTerminal aria-hidden="true" /></span>

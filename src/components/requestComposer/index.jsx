@@ -1,4 +1,4 @@
-import { LuChevronDown, LuCode2, LuPlay, LuSparkles } from "react-icons/lu";
+import { LuChevronDown, LuCode, LuPlay, LuSparkles } from "react-icons/lu";
 import styles from "./styles.module.css";
 
 const methods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
@@ -6,6 +6,7 @@ const methods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 const RequestComposer = ({ request, onChange, onSend, isLoading, onLoadExample }) => (
     <form
         className={styles.requestComposer}
+        id="request"
         onSubmit={(event) => {
             event.preventDefault();
             onSend();
@@ -13,7 +14,7 @@ const RequestComposer = ({ request, onChange, onSend, isLoading, onLoadExample }
     >
         <div className={styles.requestTitleRow}>
             <div>
-                <span className={styles.sectionIcon}><LuCode2 aria-hidden="true" /></span>
+                <span className={styles.sectionIcon}><LuCode aria-hidden="true" /></span>
                 <div><h2>Request</h2><p>Build your HTTP call</p></div>
             </div>
             <button className={styles.exampleButton} type="button" onClick={onLoadExample}>

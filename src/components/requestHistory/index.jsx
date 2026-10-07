@@ -11,7 +11,7 @@ const formatUrl = (value) => {
 };
 
 const RequestHistory = ({ items, activeId, onRestore }) => (
-    <aside className={styles.requestHistory} aria-labelledby="history-title">
+    <aside className={styles.requestHistory} id="history" aria-labelledby="history-title">
         <div className={styles.historyHeading}>
             <span><LuHistory aria-hidden="true" /></span>
             <div><h2 id="history-title">History</h2><p>Recent requests</p></div>
