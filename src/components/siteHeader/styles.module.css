@@ -67,7 +67,9 @@
             color: #a8b2bd;
             font-size: 11px;
             font-weight: 600;
-            transition: border-color 140ms ease, box-shadow 140ms ease;
+            transition:
+                border-color 140ms ease,
+                box-shadow 140ms ease;
 
             &:hover {
                 border-color: #3b544f;
@@ -94,7 +96,9 @@
         border-radius: 6px;
         background: #1a2029;
         color: #e8edf3;
-        transition: border-color 140ms ease, box-shadow 140ms ease;
+        transition:
+            border-color 140ms ease,
+            box-shadow 140ms ease;
 
         &:hover {
             border-color: #5a8178;

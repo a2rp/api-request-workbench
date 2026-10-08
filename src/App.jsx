@@ -88,6 +88,40 @@ const formatBody = (text, contentType) => {
     }
 };
 
+const getFollowUpUrl = (request, result, rawBody) => {
+    if (request.method !== "POST" || !result.ok) return "";
+
+    const location = result.headers.get("Location");
+    if (location) {
+        try {
+            return new URL(location, request.url).href;
+        } catch {
+            return "";
+        }
+    }
+
+    try {
+        const resource = JSON.parse(rawBody);
+        if (
+            !resource ||
+            typeof resource !== "object" ||
+            Array.isArray(resource) ||
+            resource.id === undefined ||
+            resource.id === null
+        ) {
+            return "";
+        }
+
+        const url = new URL(request.url);
+        url.search = "";
+        url.hash = "";
+        url.pathname = `${url.pathname.replace(/\/+$/, "")}/${encodeURIComponent(String(resource.id))}`;
+        return url.href;
+    } catch {
+        return "";
+    }
+};
+
 const App = () => {
     const [savedState] = useState(loadSavedApp);
     const [request, setRequest] = useState(savedState.request);
@@ -99,13 +133,17 @@ const App = () => {
 
     useEffect(() => {
         try {
-            window.localStorage.setItem(storageKey, JSON.stringify({ request, history }));
+            window.localStorage.setItem(
+                storageKey,
+                JSON.stringify({ request, history }),
+            );
         } catch {
             return;
         }
     }, [request, history]);
 
     const handleRequestChange = (key, value) => {
+        setResponse(null);
         if (key === "method") {
             const example = requestExamples.find(
                 (item) => item.request.method === value,
@@ -130,12 +168,24 @@ const App = () => {
         setResponse(null);
         try {
             const parsedHeaders = JSON.parse(request.headers || "{}");
-            if (!parsedHeaders || typeof parsedHeaders !== "object" || Array.isArray(parsedHeaders)) {
-                throw new Error("Headers must be a JSON object with name and value pairs.");
+            if (
+                !parsedHeaders ||
+                typeof parsedHeaders !== "object" ||
+                Array.isArray(parsedHeaders)
+            ) {
+                throw new Error(
+                    "Headers must be a JSON object with name and value pairs.",
+                );
             }
             const headers = new Headers();
-            Object.entries(parsedHeaders).forEach(([name, value]) => headers.set(name, String(value)));
-            if (request.body.trim() && !headers.has("Content-Type") && request.method !== "GET") {
+            Object.entries(parsedHeaders).forEach(([name, value]) =>
+                headers.set(name, String(value)),
+            );
+            if (
+                request.body.trim() &&
+                !headers.has("Content-Type") &&
+                request.method !== "GET"
+            ) {
                 try {
                     JSON.parse(request.body);
                     headers.set("Content-Type", "application/json");
@@ -144,18 +194,30 @@ const App = () => {
                 }
             }
             const options = { method: request.method, headers };
-            if (request.method !== "GET" && request.body.trim()) options.body = request.body;
+            if (request.method !== "GET" && request.body.trim())
+                options.body = request.body;
 
             const result = await fetch(request.url, options);
             const rawBody = await result.text();
+            const isJsonPlaceholderWrite =
+                request.method === "POST" &&
+                new URL(request.url).hostname === "jsonplaceholder.typicode.com" &&
+                result.ok;
             const nextResponse = {
                 ok: result.ok,
                 status: result.status,
                 statusText: result.statusText || "Response",
                 duration: Math.round(performance.now() - startedAt),
                 size: new Blob([rawBody]).size,
-                body: formatBody(rawBody, result.headers.get("content-type") ?? ""),
-                headers: [...result.headers.entries()].sort(([first], [second]) => first.localeCompare(second)),
+                body: formatBody(
+                    rawBody,
+                    result.headers.get("content-type") ?? "",
+                ),
+                headers: [...result.headers.entries()].sort(
+                    ([first], [second]) => first.localeCompare(second),
+                ),
+                followUpUrl: getFollowUpUrl(request, result, rawBody),
+                jsonPlaceholderWrite: isJsonPlaceholderWrite,
             };
             setResponse(nextResponse);
             const historyItem = {
@@ -172,11 +234,12 @@ const App = () => {
             setHistory((current) => [historyItem, ...current].slice(0, 8));
             setActiveHistoryId(historyItem.id);
         } catch (error) {
-            const message = error instanceof SyntaxError
-                ? "Headers must be valid JSON. Check the header names and values, then try again."
-                : error instanceof TypeError
-                    ? "Request failed. Check the URL, network, and the API's CORS policy."
-                    : error.message;
+            const message =
+                error instanceof SyntaxError
+                    ? "Headers must be valid JSON. Check the header names and values, then try again."
+                    : error instanceof TypeError
+                      ? "Request failed. Check the URL, network, and the API's CORS policy."
+                      : error.message;
             const nextResponse = {
                 ok: false,
                 error: true,
@@ -207,12 +270,19 @@ const App = () => {
     };
 
     const restoreRequest = (item) => {
-        setRequest({ method: item.method, url: item.url, headers: item.headers, body: item.body });
+        setResponse(null);
+        setRequest({
+            method: item.method,
+            url: item.url,
+            headers: item.headers,
+            body: item.body,
+        });
         setActiveHistoryId(item.id);
         setSelectedExampleId("");
     };
 
     const loadExample = (exampleId) => {
+        setResponse(null);
         const example = requestExamples.find((item) => item.id === exampleId);
 
         if (!example) {
@@ -225,16 +295,45 @@ const App = () => {
         setSelectedExampleId(example.id);
     };
 
+    const loadFollowUpGet = (url) => {
+        setRequest({
+            method: "GET",
+            url,
+            headers: readHeaders,
+            body: "",
+        });
+        setActiveHistoryId(null);
+        setSelectedExampleId("");
+        document.getElementById("request")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
+
     return (
         <div className={styles.appShell} id="top">
             <SiteHeader />
             <main className={styles.mainContent}>
                 <div className={styles.workbenchIntro}>
-                    <div><h1>Make the request.<br /><span>Read the response.</span></h1><p>A small, focused space to test an endpoint and inspect what comes back.</p></div>
+                    <div>
+                        <h1>
+                            Make the request.
+                            <br />
+                            <span>Read the response.</span>
+                        </h1>
+                        <p>
+                            A small, focused space to test an endpoint and
+                            inspect what comes back.
+                        </p>
+                    </div>
                     <span className={styles.localBadge}>LOCAL WORKSPACE</span>
                 </div>
                 <div className={styles.workbenchShell}>
-                    <RequestHistory items={history} activeId={activeHistoryId} onRestore={restoreRequest} />
+                    <RequestHistory
+                        items={history}
+                        activeId={activeHistoryId}
+                        onRestore={restoreRequest}
+                    />
                     <div className={styles.mainColumn}>
                         <RequestComposer
                             request={request}
@@ -245,7 +344,10 @@ const App = () => {
                             examples={requestExamples}
                             selectedExampleId={selectedExampleId}
                         />
-                        <ResponseViewer response={response} />
+                        <ResponseViewer
+                            response={response}
+                            onLoadFollowUp={loadFollowUpGet}
+                        />
                     </div>
                 </div>
             </main>

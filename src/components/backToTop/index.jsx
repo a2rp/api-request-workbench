@@ -19,7 +19,8 @@ const BackToTop = () => {
             hidden={!visible}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-            <LuArrowUp aria-hidden="true" /><span>Top</span>
+            <LuArrowUp aria-hidden="true" />
+            <span>Top</span>
         </button>
     );
 };

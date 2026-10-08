@@ -32,26 +32,52 @@ const SiteHeader = () => {
         <header className={styles.siteHeader} ref={headerRef}>
             <div className={styles.headerInner}>
                 <a className={styles.brand} href="#request">
-                    <span className={styles.brandIcon}><LuBraces aria-hidden="true" /></span>
+                    <span className={styles.brandIcon}>
+                        <LuBraces aria-hidden="true" />
+                    </span>
                     <span>Requestly</span>
                     <span className={styles.brandTag}>API WORKBENCH</span>
                 </a>
-                <nav className={`${styles.navigation} ${menuOpen ? styles.navigationOpen : ""}`} id="main-navigation" aria-label="Main navigation">
-                    {navigationLinks.map((link) => <a href={link.href} key={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>)}
+                <nav
+                    className={`${styles.navigation} ${menuOpen ? styles.navigationOpen : ""}`}
+                    id="main-navigation"
+                    aria-label="Main navigation"
+                >
+                    {navigationLinks.map((link) => (
+                        <a
+                            href={link.href}
+                            key={link.href}
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            {link.label}
+                        </a>
+                    ))}
                 </nav>
                 <div className={styles.actions}>
-                    <a className={styles.repositoryLink} href="https://github.com/a2rp/api-request-workbench" target="_blank" rel="noreferrer">
-                        <FaGithub aria-hidden="true" /><span>Repository</span>
+                    <a
+                        className={styles.repositoryLink}
+                        href="https://github.com/a2rp/api-request-workbench"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <FaGithub aria-hidden="true" />
+                        <span>Repository</span>
                     </a>
                     <button
                         className={styles.menuButton}
                         type="button"
-                        aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+                        aria-label={
+                            menuOpen ? "Close navigation" : "Open navigation"
+                        }
                         aria-expanded={menuOpen}
                         aria-controls="main-navigation"
                         onClick={() => setMenuOpen((open) => !open)}
                     >
-                        {menuOpen ? <LuX aria-hidden="true" /> : <LuMenu aria-hidden="true" />}
+                        {menuOpen ? (
+                            <LuX aria-hidden="true" />
+                        ) : (
+                            <LuMenu aria-hidden="true" />
+                        )}
                     </button>
                 </div>
             </div>

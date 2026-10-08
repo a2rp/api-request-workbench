@@ -1,4 +1,5 @@
 .requestComposer {
+    scroll-margin-top: 82px;
     border-bottom: 1px solid var(--border);
     background: #1a2029;
     padding: 21px 22px 20px;
@@ -58,7 +59,9 @@
         color: #bbc4ce;
         font-size: 10px;
         font-weight: 650;
-        transition: border-color 140ms ease, box-shadow 140ms ease;
+        transition:
+            border-color 140ms ease,
+            box-shadow 140ms ease;
 
         .exampleIcon {
             flex: 0 0 auto;
@@ -191,7 +194,9 @@
         color: #10231f;
         font-size: 11px;
         font-weight: 800;
-        transition: border-color 140ms ease, box-shadow 140ms ease;
+        transition:
+            border-color 140ms ease,
+            box-shadow 140ms ease;
 
         svg {
             width: 14px;

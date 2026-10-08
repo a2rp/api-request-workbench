@@ -11,10 +11,19 @@ const formatUrl = (value) => {
 };
 
 const RequestHistory = ({ items, activeId, onRestore }) => (
-    <aside className={styles.requestHistory} id="history" aria-labelledby="history-title">
+    <aside
+        className={styles.requestHistory}
+        id="history"
+        aria-labelledby="history-title"
+    >
         <div className={styles.historyHeading}>
-            <span><LuHistory aria-hidden="true" /></span>
-            <div><h2 id="history-title">History</h2><p>Recent requests</p></div>
+            <span>
+                <LuHistory aria-hidden="true" />
+            </span>
+            <div>
+                <h2 id="history-title">History</h2>
+                <p>Recent requests</p>
+            </div>
             <span className={styles.historyCount}>{items.length}</span>
         </div>
         {items.length === 0 ? (
@@ -34,12 +43,30 @@ const RequestHistory = ({ items, activeId, onRestore }) => (
                         onClick={() => onRestore(item)}
                     >
                         <span className={styles.historyItemTop}>
-                            <span className={`${styles.methodBadge} ${styles[item.method.toLowerCase()] ?? ""}`}>{item.method}</span>
-                            <span className={`${styles.statusDot} ${item.ok ? styles.statusOk : styles.statusFailed}`} />
-                            <span className={styles.historyTime}><LuTimer aria-hidden="true" />{new Date(item.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                            <span
+                                className={`${styles.methodBadge} ${styles[item.method.toLowerCase()] ?? ""}`}
+                            >
+                                {item.method}
+                            </span>
+                            <span
+                                className={`${styles.statusDot} ${item.ok ? styles.statusOk : styles.statusFailed}`}
+                            />
+                            <span className={styles.historyTime}>
+                                <LuTimer aria-hidden="true" />
+                                {new Date(item.timestamp).toLocaleTimeString(
+                                    [],
+                                    { hour: "2-digit", minute: "2-digit" },
+                                )}
+                            </span>
                         </span>
-                        <span className={styles.historyUrl}>{formatUrl(item.url)}</span>
-                        <span className={styles.historyStatus}>{item.status ? `${item.status} ${item.statusText}` : "Request failed"}</span>
+                        <span className={styles.historyUrl}>
+                            {formatUrl(item.url)}
+                        </span>
+                        <span className={styles.historyStatus}>
+                            {item.status
+                                ? `${item.status} ${item.statusText}`
+                                : "Request failed"}
+                        </span>
                     </button>
                 ))}
             </div>

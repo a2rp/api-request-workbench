@@ -12,6 +12,7 @@ Requestly is a browser-based REST client for composing HTTP requests and inspect
 - HTTP methods for GET, POST, PUT, PATCH, and DELETE.
 - Editable URL, request headers as a JSON object, and a request body for methods other than GET.
 - An example request dropdown with GET, POST, PUT, PATCH, and DELETE presets. Selecting a preset fills the method, URL, headers, and body without sending it.
+- A **Prepare GET** action for successful POST responses that return a `Location` header or an `id`. It fills the request with a GET URL for that resource.
 - A live response view with HTTP status, elapsed time, response size, formatted JSON or text, and response headers.
 - Copy controls for the response body or response headers.
 - A local history of the eight most recent requests. Selecting a history item restores its method, URL, headers, and body to the composer.
@@ -19,7 +20,9 @@ Requestly is a browser-based REST client for composing HTTP requests and inspect
 
 ## How to send a request
 
-Choose a request from the example dropdown to fill the method, URL, headers, and body, then press **Send** when you are ready. Changing the method dropdown also loads a matching example, so the URL and body stay in sync with GET, POST, PUT, PATCH, or DELETE. The presets include a GET for one to-do and create, replace, edit, and delete examples for posts. You can edit any populated field before sending. The response panel shows the status, time, size, body, and headers. Use the response tabs to switch between body and headers, then copy the visible content with **Copy**.
+Choose a request from the example dropdown to fill the method, URL, headers, and body, then press **Send** when you are ready. Changing the method dropdown also loads a matching example, so the URL and body stay in sync with GET, POST, PUT, PATCH, or DELETE. The presets include a GET for one to-do and create, replace, edit, and delete examples for posts. You can edit any populated field before sending. After a successful POST, choose **Prepare GET** to load a GET request for the returned resource ID or `Location` URL, then press **Send**. The response panel shows the status, time, size, body, and headers. Use the response tabs to switch between body and headers, then copy the visible content with **Copy**.
+
+The sample POST uses JSONPlaceholder. That service simulates writes and does not save created data, so a follow-up GET cannot retrieve the exact POST body. The app displays this limitation after a JSONPlaceholder POST. Use an API backed by persistent storage when you need to create a record and read back the same record.
 
 Request headers must be a JSON object such as `{"Accept":"application/json"}`. If a non-GET request has a body and no content type is set, the client uses `application/json` for valid JSON and `text/plain` otherwise. This app uses `fetch` directly in the visitor's browser. The target server must allow the request through its CORS policy; a browser CORS failure is shown as a request error.
 

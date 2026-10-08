@@ -22,14 +22,16 @@ const RequestComposer = ({
     >
         <div className={styles.requestTitleRow}>
             <div>
-                <span className={styles.sectionIcon}><LuCode aria-hidden="true" /></span>
-                <div><h2>Request</h2><p>Build your HTTP call</p></div>
+                <span className={styles.sectionIcon}>
+                    <LuCode aria-hidden="true" />
+                </span>
+                <div>
+                    <h2>Request</h2>
+                    <p>Build your HTTP call</p>
+                </div>
             </div>
             <label className={styles.examplePicker}>
-                <LuSparkles
-                    className={styles.exampleIcon}
-                    aria-hidden="true"
-                />
+                <LuSparkles className={styles.exampleIcon} aria-hidden="true" />
                 <select
                     aria-label="Choose a request example"
                     value={selectedExampleId}
@@ -48,11 +50,21 @@ const RequestComposer = ({
                 />
             </label>
         </div>
-        <label className={styles.urlLabel} htmlFor="request-url">Request URL</label>
+        <label className={styles.urlLabel} htmlFor="request-url">
+            Request URL
+        </label>
         <div className={styles.urlRow}>
             <label className={styles.methodSelect} htmlFor="request-method">
-                <select id="request-method" value={request.method} onChange={(event) => onChange("method", event.target.value)}>
-                    {methods.map((method) => <option value={method} key={method}>{method}</option>)}
+                <select
+                    id="request-method"
+                    value={request.method}
+                    onChange={(event) => onChange("method", event.target.value)}
+                >
+                    {methods.map((method) => (
+                        <option value={method} key={method}>
+                            {method}
+                        </option>
+                    ))}
                 </select>
                 <LuChevronDown aria-hidden="true" />
             </label>
@@ -65,25 +77,42 @@ const RequestComposer = ({
                 value={request.url}
                 onChange={(event) => onChange("url", event.target.value)}
             />
-            <button className={styles.sendButton} type="submit" disabled={isLoading || !request.url.trim()}>
+            <button
+                className={styles.sendButton}
+                type="submit"
+                disabled={isLoading || !request.url.trim()}
+            >
                 <LuPlay aria-hidden="true" />
                 {isLoading ? "Sending" : "Send"}
             </button>
         </div>
         <div className={styles.requestFields}>
             <label className={styles.editorField} htmlFor="request-headers">
-                <span>Headers <small>JSON</small></span>
+                <span>
+                    Headers <small>JSON</small>
+                </span>
                 <textarea
                     id="request-headers"
                     rows="4"
                     spellCheck="false"
                     value={request.headers}
-                    onChange={(event) => onChange("headers", event.target.value)}
+                    onChange={(event) =>
+                        onChange("headers", event.target.value)
+                    }
                 />
-                <small className={styles.fieldHint}>Add key and value pairs as a JSON object.</small>
+                <small className={styles.fieldHint}>
+                    Add key and value pairs as a JSON object.
+                </small>
             </label>
             <label className={styles.editorField} htmlFor="request-body">
-                <span>Body <small>{request.method === "GET" ? "not used for GET" : "JSON or text"}</small></span>
+                <span>
+                    Body{" "}
+                    <small>
+                        {request.method === "GET"
+                            ? "not used for GET"
+                            : "JSON or text"}
+                    </small>
+                </span>
                 <textarea
                     id="request-body"
                     rows="4"
@@ -93,7 +122,10 @@ const RequestComposer = ({
                     onChange={(event) => onChange("body", event.target.value)}
                     placeholder={'{\n  "name": "Example"\n}'}
                 />
-                <small className={styles.fieldHint}>Requests from a browser may be limited by the API's CORS policy.</small>
+                <small className={styles.fieldHint}>
+                    Requests from a browser may be limited by the API's CORS
+                    policy.
+                </small>
             </label>
         </div>
     </form>
