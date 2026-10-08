@@ -8,12 +8,64 @@ import SiteHeader from "./components/siteHeader/index.jsx";
 import styles from "./App.module.css";
 
 const storageKey = "requestly-workbench-v1";
-const sampleRequest = {
-    method: "GET",
-    url: "https://jsonplaceholder.typicode.com/todos/1",
-    headers: '{\n  "Accept": "application/json"\n}',
-    body: '{\n  "title": "A clear example",\n  "completed": false\n}',
-};
+const readHeaders = '{\n  "Accept": "application/json"\n}';
+const writeHeaders =
+    '{\n  "Accept": "application/json",\n  "Content-Type": "application/json; charset=UTF-8"\n}';
+
+const requestExamples = [
+    {
+        id: "get-todo",
+        label: "GET /todos/1",
+        request: {
+            method: "GET",
+            url: "https://jsonplaceholder.typicode.com/todos/1",
+            headers: readHeaders,
+            body: "",
+        },
+    },
+    {
+        id: "create-post",
+        label: "POST /posts",
+        request: {
+            method: "POST",
+            url: "https://jsonplaceholder.typicode.com/posts",
+            headers: writeHeaders,
+            body: '{\n  "title": "A clear example",\n  "body": "Created from Requestly",\n  "userId": 1\n}',
+        },
+    },
+    {
+        id: "replace-post",
+        label: "PUT /posts/1",
+        request: {
+            method: "PUT",
+            url: "https://jsonplaceholder.typicode.com/posts/1",
+            headers: writeHeaders,
+            body: '{\n  "id": 1,\n  "title": "An updated example",\n  "body": "Replaced from Requestly",\n  "userId": 1\n}',
+        },
+    },
+    {
+        id: "edit-post",
+        label: "PATCH /posts/1",
+        request: {
+            method: "PATCH",
+            url: "https://jsonplaceholder.typicode.com/posts/1",
+            headers: writeHeaders,
+            body: '{\n  "title": "A revised title"\n}',
+        },
+    },
+    {
+        id: "delete-post",
+        label: "DELETE /posts/1",
+        request: {
+            method: "DELETE",
+            url: "https://jsonplaceholder.typicode.com/posts/1",
+            headers: readHeaders,
+            body: "",
+        },
+    },
+];
+
+const sampleRequest = requestExamples[0].request;
 
 const loadSavedApp = () => {
     try {
@@ -43,6 +95,7 @@ const App = () => {
     const [activeHistoryId, setActiveHistoryId] = useState(null);
     const [response, setResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedExampleId, setSelectedExampleId] = useState("");
 
     useEffect(() => {
         try {
@@ -53,8 +106,22 @@ const App = () => {
     }, [request, history]);
 
     const handleRequestChange = (key, value) => {
+        if (key === "method") {
+            const example = requestExamples.find(
+                (item) => item.request.method === value,
+            );
+
+            if (example) {
+                setRequest({ ...example.request });
+                setActiveHistoryId(null);
+                setSelectedExampleId(example.id);
+                return;
+            }
+        }
+
         setRequest((current) => ({ ...current, [key]: value }));
         setActiveHistoryId(null);
+        setSelectedExampleId("");
     };
 
     const sendRequest = async () => {
@@ -142,11 +209,20 @@ const App = () => {
     const restoreRequest = (item) => {
         setRequest({ method: item.method, url: item.url, headers: item.headers, body: item.body });
         setActiveHistoryId(item.id);
+        setSelectedExampleId("");
     };
 
-    const loadExample = () => {
-        setRequest(sampleRequest);
+    const loadExample = (exampleId) => {
+        const example = requestExamples.find((item) => item.id === exampleId);
+
+        if (!example) {
+            setSelectedExampleId("");
+            return;
+        }
+
+        setRequest({ ...example.request });
         setActiveHistoryId(null);
+        setSelectedExampleId(example.id);
     };
 
     return (
@@ -166,6 +242,8 @@ const App = () => {
                             onSend={sendRequest}
                             isLoading={isLoading}
                             onLoadExample={loadExample}
+                            examples={requestExamples}
+                            selectedExampleId={selectedExampleId}
                         />
                         <ResponseViewer response={response} />
                     </div>

@@ -45,7 +45,8 @@
         }
     }
 
-    .exampleButton {
+    .examplePicker {
+        position: relative;
         display: inline-flex;
         min-height: 31px;
         align-items: center;
@@ -53,21 +54,54 @@
         border: 1px solid #3a444e;
         border-radius: 6px;
         background: #212832;
-        padding: 0 9px;
+        padding: 0 26px 0 9px;
         color: #bbc4ce;
         font-size: 10px;
         font-weight: 650;
         transition: border-color 140ms ease, box-shadow 140ms ease;
 
-        svg {
+        .exampleIcon {
+            flex: 0 0 auto;
             width: 13px;
             height: 13px;
             color: var(--amber);
         }
 
+        .exampleChevron {
+            position: absolute;
+            right: 8px;
+            width: 13px;
+            height: 13px;
+            color: #8994a1;
+            pointer-events: none;
+        }
+
+        select {
+            min-width: 115px;
+            min-height: 29px;
+            appearance: none;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            padding: 0 2px;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+
+            option {
+                background: #212832;
+                color: #bbc4ce;
+            }
+        }
+
         &:hover {
             border-color: #67817b;
             box-shadow: 0 0 0 2px rgb(98 221 192 / 10%);
+        }
+
+        &:focus-within {
+            border-color: #5f9587;
+            box-shadow: 0 0 0 2px rgb(98 221 192 / 12%);
         }
     }
 

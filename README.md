@@ -11,7 +11,7 @@ Requestly is a browser-based REST client for composing HTTP requests and inspect
 - A fixed header with navigation to the request composer, recent history, and response, plus a link to the source repository.
 - HTTP methods for GET, POST, PUT, PATCH, and DELETE.
 - Editable URL, request headers as a JSON object, and a request body for methods other than GET.
-- A sample GET request to `https://jsonplaceholder.typicode.com/todos/1` for trying the workflow.
+- An example request dropdown with GET, POST, PUT, PATCH, and DELETE presets. Selecting a preset fills the method, URL, headers, and body without sending it.
 - A live response view with HTTP status, elapsed time, response size, formatted JSON or text, and response headers.
 - Copy controls for the response body or response headers.
 - A local history of the eight most recent requests. Selecting a history item restores its method, URL, headers, and body to the composer.
@@ -19,7 +19,7 @@ Requestly is a browser-based REST client for composing HTTP requests and inspect
 
 ## How to send a request
 
-Choose an HTTP method, enter a full URL, and edit the headers or body if needed. Press **Send** or submit from the URL field. The response panel shows the status, time, size, body, and headers. Use the response tabs to switch between body and headers, then copy the visible content with **Copy**. **Try example** loads the sample GET request into the composer.
+Choose a request from the example dropdown to fill the method, URL, headers, and body, then press **Send** when you are ready. Changing the method dropdown also loads a matching example, so the URL and body stay in sync with GET, POST, PUT, PATCH, or DELETE. The presets include a GET for one to-do and create, replace, edit, and delete examples for posts. You can edit any populated field before sending. The response panel shows the status, time, size, body, and headers. Use the response tabs to switch between body and headers, then copy the visible content with **Copy**.
 
 Request headers must be a JSON object such as `{"Accept":"application/json"}`. If a non-GET request has a body and no content type is set, the client uses `application/json` for valid JSON and `text/plain` otherwise. This app uses `fetch` directly in the visitor's browser. The target server must allow the request through its CORS policy; a browser CORS failure is shown as a request error.
 

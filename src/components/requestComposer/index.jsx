@@ -3,7 +3,15 @@ import styles from "./styles.module.css";
 
 const methods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 
-const RequestComposer = ({ request, onChange, onSend, isLoading, onLoadExample }) => (
+const RequestComposer = ({
+    request,
+    onChange,
+    onSend,
+    isLoading,
+    onLoadExample,
+    examples,
+    selectedExampleId,
+}) => (
     <form
         className={styles.requestComposer}
         id="request"
@@ -17,9 +25,28 @@ const RequestComposer = ({ request, onChange, onSend, isLoading, onLoadExample }
                 <span className={styles.sectionIcon}><LuCode aria-hidden="true" /></span>
                 <div><h2>Request</h2><p>Build your HTTP call</p></div>
             </div>
-            <button className={styles.exampleButton} type="button" onClick={onLoadExample}>
-                <LuSparkles aria-hidden="true" /> Try example
-            </button>
+            <label className={styles.examplePicker}>
+                <LuSparkles
+                    className={styles.exampleIcon}
+                    aria-hidden="true"
+                />
+                <select
+                    aria-label="Choose a request example"
+                    value={selectedExampleId}
+                    onChange={(event) => onLoadExample(event.target.value)}
+                >
+                    <option value="">Choose example</option>
+                    {examples.map((example) => (
+                        <option value={example.id} key={example.id}>
+                            {example.label}
+                        </option>
+                    ))}
+                </select>
+                <LuChevronDown
+                    className={styles.exampleChevron}
+                    aria-hidden="true"
+                />
+            </label>
         </div>
         <label className={styles.urlLabel} htmlFor="request-url">Request URL</label>
         <div className={styles.urlRow}>
